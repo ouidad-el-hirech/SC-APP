@@ -6,7 +6,6 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "avis")
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Avis {
@@ -26,4 +25,53 @@ public class Avis {
     @ManyToOne
     @JoinColumn(name = "prestation_id")
     private Prestation prestation;
+
+
+    public Long getIdAvis() {
+        return idAvis;
+    }
+
+    public void setIdAvis(Long idAvis) {
+        this.idAvis = idAvis;
+    }
+
+    public int getNote() {
+        return note;
+    }
+
+    public void setNote(int note) {
+        this.note = note;
+    }
+
+    public String getCommentaire() {
+        return commentaire;
+    }
+
+    public void setCommentaire(String commentaire) {
+        this.commentaire = commentaire;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public Prestation getPrestation() {
+        return prestation;
+    }
+
+    public void setPrestation(Prestation prestation) {
+        this.prestation = prestation;
+    }
 }

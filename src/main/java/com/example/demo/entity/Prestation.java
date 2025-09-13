@@ -17,4 +17,37 @@ public class Prestation {
     private String nom;
     private int duree;
     private double tarif;
+
+
+    public Long getIdPrestation() {
+        return idPrestation;
+    }
+
+    public void setIdPrestation(Long idPrestation) {
+        this.idPrestation = idPrestation;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public int getDuree() {
+        return duree;
+    }
+
+    public void setDuree(int duree) {
+        this.duree = duree;
+    }
+
+    public double getTarif() {
+        return tarif;
+    }
+
+    public void setTarif(double tarif) {
+        this.tarif = tarif;
+    }
 }

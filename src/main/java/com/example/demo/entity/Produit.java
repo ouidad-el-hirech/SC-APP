@@ -5,7 +5,6 @@ import lombok.*;
 
 @Entity
 @Table(name = "produits")
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Produit {
@@ -17,4 +16,37 @@ public class Produit {
     private String nom;
     private int stock;
     private double prix;
+
+
+    public Long getIdProduit() {
+        return idProduit;
+    }
+
+    public void setIdProduit(Long idProduit) {
+        this.idProduit = idProduit;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    public double getPrix() {
+        return prix;
+    }
+
+    public void setPrix(double prix) {
+        this.prix = prix;
+    }
 }

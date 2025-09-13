@@ -5,7 +5,6 @@ import lombok.*;
 
 @Entity
 @Table(name = "produits_utilises")
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProduitUtilise {
@@ -23,4 +22,37 @@ public class ProduitUtilise {
     @ManyToOne
     @JoinColumn(name = "idProduit")
     private Produit produit;
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public int getQuantiteUtilisee() {
+        return quantiteUtilisee;
+    }
+
+    public void setQuantiteUtilisee(int quantiteUtilisee) {
+        this.quantiteUtilisee = quantiteUtilisee;
+    }
+
+    public Prestation getPrestation() {
+        return prestation;
+    }
+
+    public void setPrestation(Prestation prestation) {
+        this.prestation = prestation;
+    }
+
+    public Produit getProduit() {
+        return produit;
+    }
+
+    public void setProduit(Produit produit) {
+        this.produit = produit;
+    }
 }

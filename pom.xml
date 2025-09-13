@@ -15,7 +15,7 @@
     <artifactId>demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>demo</name>
-    <description>Spring Boot Backend for Laravel Frontend</description>
+    <description>Spring Boot Backend for angular Frontend</description>
 
     <properties>
         <java.version>17</java.version>

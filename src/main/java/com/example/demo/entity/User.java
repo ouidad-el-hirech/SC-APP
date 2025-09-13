@@ -6,8 +6,6 @@ import lombok.*;
 
 @Entity
 @Table(name = "users") // on évite "user" seul, mot réservé dans certaines DB
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -26,4 +24,37 @@ public class User {
     @Enumerated(EnumType.STRING) // Sauvegarde le rôle comme texte
     @Column(nullable = false)
     private Role role;
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }
