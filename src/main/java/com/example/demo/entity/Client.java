@@ -1,20 +1,21 @@
-package com.example.demo.model;
+package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "prestations")
+@Table(name = "clients")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Prestation {
+public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idPrestation;
+    private Long idClient;
 
     private String nom;
-    private int duree;
-    private double tarif;
+    private String prenom;
+    private String email;
+    private String telephone;
 }

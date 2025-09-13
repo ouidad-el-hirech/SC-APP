@@ -1,5 +1,6 @@
-package com.example.demo.security;
+package com.example.demo.entity;
 
+import com.example.demo.entity.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
