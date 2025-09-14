@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Client;
+import com.example.demo.repository.ClientRepository;
 import com.example.demo.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,7 @@ public class ClientController {
     public ResponseEntity<Client> updateClient(@RequestBody Client updatedClient) {
         return ResponseEntity.ok(clientService.updateClient(updatedClient));
     }
+    
 
     @DeleteMapping("/id/{id}")
     public ResponseEntity<Void> deleteClient(@PathVariable Long id) {
