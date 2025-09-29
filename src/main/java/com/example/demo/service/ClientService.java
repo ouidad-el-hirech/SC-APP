@@ -1,7 +1,10 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.Client;
+import com.example.demo.repository.AvisRepository;
 import com.example.demo.repository.ClientRepository;
+import com.example.demo.repository.RendezvousRepository;
+
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +16,11 @@ public class ClientService {
 
     @Autowired
     private ClientRepository clientRepository;
+    @Autowired
+    private RendezvousRepository rendezvousRepository;
+    @Autowired
+    private AvisRepository avisRepository;
+    
 
     public List<Client> getAllClients() {
         return clientRepository.findAll();
@@ -49,6 +57,9 @@ public class ClientService {
     public void deleteClient(Long id) {
         Client existingClient = clientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Client avec ID " + id + " non trouvé"));
+        rendezvousRepository.deleteByClient_IdClient(id);
+        avisRepository.deleteByClient_IdClient(id);
         clientRepository.delete(existingClient);
+      
     }
 }

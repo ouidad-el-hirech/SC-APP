@@ -64,7 +64,7 @@ public class UserService {
             client.setEmail(savedUser.getEmail());
             client.setTelephone(savedUser.getTelephone());
             client.setUser(savedUser); // lien User → Client
-            clientRepository.save(client);
+            clientRepository.save(client); //cc soukaina save dans client
         }
 
         return savedUser;
