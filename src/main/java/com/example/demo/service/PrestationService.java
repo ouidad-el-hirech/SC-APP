@@ -33,13 +33,8 @@ public class PrestationService {
 
     //Update
     public Prestation updatePrestation(Long id, Prestation prestDetails) {
-        Prestation existingPrestation = getPrestationById(id);
-
-        existingPrestation.setNom(prestDetails.getNom());
-        existingPrestation.setTarif(prestDetails.getTarif());
-        existingPrestation.setDuree(prestDetails.getDuree());
-      
-        return prestationRepository.save(existingPrestation);
+        this.getPrestationById(id);
+        return prestationRepository.save(prestDetails);
     }
 
     //Delete

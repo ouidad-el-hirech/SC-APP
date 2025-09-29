@@ -15,8 +15,13 @@ public class Prestation {
     private Long idPrestation;
 
     private String nom;
+
+    private String description;
+
     private int duree;
     private double tarif;
+
+    private String img;
 
 
     public Long getIdPrestation() {
@@ -35,6 +40,14 @@ public class Prestation {
         this.nom = nom;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public int getDuree() {
         return duree;
     }
@@ -49,5 +62,13 @@ public class Prestation {
 
     public void setTarif(double tarif) {
         this.tarif = tarif;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 }
