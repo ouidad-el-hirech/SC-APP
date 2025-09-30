@@ -32,13 +32,8 @@ public class ProduitService {
 
     // Update
     public Produit updateProduit(Long id, Produit produitDetails) {
-        Produit existingProduit = getProduitById(id);
-
-        existingProduit.setNom(produitDetails.getNom());
-        existingProduit.setStock(produitDetails.getStock());
-        existingProduit.setPrix(produitDetails.getPrix());
-
-        return produitRepository.save(existingProduit);
+        this.getProduitById(id);
+        return produitRepository.save(produitDetails);
     }
 
     // Delete
