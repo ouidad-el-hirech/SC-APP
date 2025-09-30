@@ -2,6 +2,10 @@ package com.example.demo.service;
 
 import com.example.demo.entity.RendezVous;
 import com.example.demo.repository.RendezvousRepository;
+
+import DTO.ChiffreAffairesMensuelDTO;
+import DTO.RendezVousEmployeStatDTO;
+import DTO.TopRendezvous;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,4 +56,14 @@ public class RendezvousService {
                 .orElseThrow(() -> new EntityNotFoundException("Rendez-vous avec ID " + id + " non trouvé"));
         rendezvousRepository.delete(existingRendezVous);
     }
+    public List<ChiffreAffairesMensuelDTO> getChiffreAffairesMensuel(int year) {
+        return rendezvousRepository.getChiffreAffairesMensuel(year);
+    }
+    public List<RendezVousEmployeStatDTO> getStatsRendezVousParEmploye(int year) {
+        return rendezvousRepository.getStatsRendezVousParEmploye(year);
+    }
+    public List<TopRendezvous> getTopRendezvous(int year) {
+        return rendezvousRepository.getTopRendezvous(year);
+    }
+    
 }
