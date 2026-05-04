@@ -8,6 +8,7 @@ import DTO.RendezVousEmployeStatDTO;
 import DTO.TopRendezvous;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,6 +18,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface RendezvousRepository extends JpaRepository<RendezVous,Long> {
+	
+	// Vérifier si créneau est occupé (même date, heure, employe)
+	@Query("SELECT r FROM RendezVous r WHERE r.date = :date AND r.heure = :heure AND r.employe.id = :employeId")
+	List<RendezVous> findByDateHeureEmploye(
+	    @Param("date") LocalDate date,
+	    @Param("heure") LocalTime heure,
+	    @Param("employeId") Long employeId
+	);
+	
 	@Query("""
 		    SELECT new DTO.PrestationStatDTO(p.nom, COUNT(r.idRDV))
 		    FROM RendezVous r
@@ -26,45 +36,45 @@ public interface RendezvousRepository extends JpaRepository<RendezVous,Long> {
 		    GROUP BY p.nom
 		    ORDER BY COUNT(r.idRDV) DESC
 		""")
-		List<PrestationStatDTO> findTopPrestations(
-		    @Param("startDate") LocalDate startDate,
-		    @Param("endDate") LocalDate endDate
-		);
-	 @Query(value = """
-		        SELECT new DTO.ChiffreAffairesMensuelDTO(
-		            MONTH(r.date),
-		            SUM(p.tarif)
-		        )
-		        FROM RendezVous r
-		        JOIN r.prestation p
-		        WHERE YEAR(r.date) = :year
-		          AND r.statut = 'CONFIRME'
-		        GROUP BY MONTH(r.date)
-		        ORDER BY MONTH(r.date)
-		        """)
-		    List<ChiffreAffairesMensuelDTO> getChiffreAffairesMensuel(@Param("year") int year);
-	 
-	 @Query("SELECT new DTO.RendezVousEmployeStatDTO(e.nom, COUNT(r.idRDV)) " +
+	List<PrestationStatDTO> findTopPrestations(
+	    @Param("startDate") LocalDate startDate,
+	    @Param("endDate") LocalDate endDate
+	);
+	
+	@Query(value = """
+	        SELECT new DTO.ChiffreAffairesMensuelDTO(
+	            MONTH(r.date),
+	            SUM(p.tarif)
+	        )
+	        FROM RendezVous r
+	        JOIN r.prestation p
+	        WHERE YEAR(r.date) = :year
+	          AND r.statut = 'CONFIRME'
+	        GROUP BY MONTH(r.date)
+	        ORDER BY MONTH(r.date)
+	        """)
+	List<ChiffreAffairesMensuelDTO> getChiffreAffairesMensuel(@Param("year") int year);
+	
+	@Query("SELECT new DTO.RendezVousEmployeStatDTO(e.nom, COUNT(r.idRDV)) " +
 	           "FROM RendezVous r " +
 	           "JOIN r.employe e " +
 	           "WHERE YEAR(r.date) = :annee " +
 	           "GROUP BY e.nom " +
 	           "ORDER BY COUNT(r.idRDV) DESC")
-	    List<RendezVousEmployeStatDTO> getStatsRendezVousParEmploye(@Param("annee") int annee);
-	 
-	 @Query(value = """
-		        SELECT new DTO.TopRendezvous(
-		            MONTH(r.date),
-		            COUNT(r.idRDV)
-		        )
-		        FROM RendezVous r
-		        WHERE YEAR(r.date) = :year
-		        GROUP BY MONTH(r.date)
-		        ORDER BY MONTH(r.date)
-		        """)
-	 
-		    List<TopRendezvous> getTopRendezvous(@Param("year") int year);
-	 @Transactional
-	 void deleteByClient_IdClient(Long clientId);
-	   
+	List<RendezVousEmployeStatDTO> getStatsRendezVousParEmploye(@Param("annee") int annee);
+	
+	@Query(value = """
+	        SELECT new DTO.TopRendezvous(
+	            MONTH(r.date),
+	            COUNT(r.idRDV)
+	        )
+	        FROM RendezVous r
+	        WHERE YEAR(r.date) = :year
+	        GROUP BY MONTH(r.date)
+	        ORDER BY MONTH(r.date)
+	        """)
+	List<TopRendezvous> getTopRendezvous(@Param("year") int year);
+	
+	@Transactional
+	void deleteByClient_IdClient(Long clientId);
 }

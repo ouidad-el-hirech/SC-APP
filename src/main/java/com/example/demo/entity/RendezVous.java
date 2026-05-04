@@ -1,6 +1,8 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -15,18 +17,26 @@ public class RendezVous {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idRDV;
 
+    @NotNull(message = "La date est obligatoire")
     private LocalDate date;
+
+    @NotNull(message = "L'heure est obligatoire")
     private LocalTime heure;
+
+    @NotBlank(message = "Le statut est obligatoire")
     private String statut;
 
+    @NotNull(message = "Le client est obligatoire")
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
 
+    @NotNull(message = "L'employe est obligatoire")
     @ManyToOne
     @JoinColumn(name = "employe_id")
     private Employe employe;
 
+    @NotNull(message = "La prestation est obligatoire")
     @ManyToOne
     @JoinColumn(name = "prestation_id")
     private Prestation prestation;
@@ -38,7 +48,7 @@ public class RendezVous {
     public void setIdRDV(Long idRDV) {
         this.idRDV = idRDV;
     }
-
+    
     public LocalDate getDate() {
         return date;
     }
