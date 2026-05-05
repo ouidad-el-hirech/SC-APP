@@ -22,52 +22,80 @@ public class UserService {
 
     public UserService(UserRepository userRepository, ClientRepository clientRepository, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
-		this.clientRepository = clientRepository;
+        this.clientRepository = clientRepository;
         this.jwtUtil = jwtUtil;
     }
 
-    // LOGIN avec génération du token
     public ResponseEntity<?> login(User user) {
+        // Champs obligatoires
+        if (user.getEmail() == null || user.getEmail().isBlank())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("L'email est obligatoire");
+        if (user.getPassword() == null || user.getPassword().isBlank())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Le mot de passe est obligatoire");
+
+        // Format email
+        if (!user.getEmail().matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$"))
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Format de l'email invalide");
+
         User u = userRepository.findByEmail(user.getEmail());
 
         if (u != null && u.getPassword().equals(user.getPassword())) {
-            // Générer un token
-            String token = jwtUtil.generateToken(u.getEmail(),u.getRole());
+            String token = jwtUtil.generateToken(u.getEmail(), u.getRole());
 
-            // Retourner un objet JSON avec token et infos utilisateur
             Map<String, Object> response = new HashMap<>();
             response.put("token", token);
             response.put("email", u.getEmail());
             response.put("nom", u.getNom());
-            response.put("telephone", u.getTelephone());
             response.put("prenom", u.getPrenom());
+            response.put("telephone", u.getTelephone());
             response.put("role", u.getRole());
 
             return ResponseEntity.ok(response);
         }
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body("Email ou mot de passe incorrect");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email ou mot de passe incorrect");
     }
 
-    // Inscription
-    public User register(User user) {
-    	user.setRole(Role.CLIENT);
-    	 // 2️⃣ Sauvegarder l'utilisateur
+    public ResponseEntity<?> register(User user) {
+        // Champs obligatoires
+        if (user.getEmail() == null || user.getEmail().isBlank())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("L'email est obligatoire");
+        if (user.getPassword() == null || user.getPassword().isBlank())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Le mot de passe est obligatoire");
+        if (user.getNom() == null || user.getNom().isBlank())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Le nom est obligatoire");
+        if (user.getPrenom() == null || user.getPrenom().isBlank())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Le prénom est obligatoire");
+        if (user.getTelephone() == null || user.getTelephone().isBlank())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Le téléphone est obligatoire");
+
+        // Format email
+        if (!user.getEmail().matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$"))
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Format de l'email invalide");
+
+        // Longueur mot de passe
+        if (user.getPassword().length() < 6)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Le mot de passe doit contenir au moins 6 caractères");
+
+        // Email déjà existant
+        if (userRepository.findByEmail(user.getEmail()) != null)
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Un compte avec cet email existe déjà");
+
+        // Sauvegarde
+        user.setRole(Role.CLIENT);
         User savedUser = userRepository.save(user);
 
-        // 3️⃣ Créer automatiquement le client correspondant
         if (savedUser.getRole() == Role.CLIENT) {
             Client client = new Client();
             client.setNom(savedUser.getNom());
             client.setPrenom(savedUser.getPrenom());
             client.setEmail(savedUser.getEmail());
             client.setTelephone(savedUser.getTelephone());
-            client.setUser(savedUser); // lien User → Client
-            clientRepository.save(client); //cc soukaina save dans client
+            client.setUser(savedUser);
+            clientRepository.save(client);
         }
 
-        return savedUser;
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
 
     public User getUserByEmail(String email) {
